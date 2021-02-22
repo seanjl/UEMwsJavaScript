@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Written by Sean Leitch, 17 Feb 2021 -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+    <meta name="description" content="Shh! They can hear you!">
+    <meta name="author" content="Sean Leitch">
+
+    <title>Calculadora JS</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/material.css">
+    <link rel="stylesheet" href="css/material.css.map">
+    <link rel="stylesheet" href="js/material.js">
+    <link rel="stylesheet" href="js/material.js.map">
+    <link rel="stylesheet" href="js/jquery-3.5.1.min.js">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,300;0,400;0,700;1,700&display=swap" rel="stylesheet">
+    <link rel="icon" href="favicon.ico">
+
+    <style>
+        /* Style by Sean Leitch | 22 Feb 2021 */
+        
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            background-color: #FFFFFF;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+            scroll-behavior: smooth;
+            font-family: 'Nunito Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            color: #333333;
+            width: 100%;
+            height: 100%;
+        }
+        
+        main {
+            margin: auto;
+            max-width: 720px;
+        }
+        
+        .containerIndex {
+            height: 100vh;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        h1 {
+            color: #060547;
+        }
+        
+        .neumorphism-2 {
+            margin: auto;
+            height: auto;
+            width: 90%;
+            max-width: 620px;
+            padding: 1.5em;
+            border-radius: 50px;
+            background: #ffffff;
+            box-shadow: inset 0 0 15px rgba(55, 84, 170, 0), inset 0 0 20px rgba(255, 255, 255, 0), 7px 7px 15px rgba(55, 84, 170, .15), -7px -7px 20px rgba(255, 255, 255, 1), inset 0px 0px 4px rgba(255, 255, 255, .2);
+        }
+        
+        .result {
+            -moz-appearance: none;
+            -webkit-appearance: none;
+            appearance: none;
+            background-color: transparent;
+            font-size: 20px;
+            overflow-wrap: break-word;
+            letter-spacing: 0.1em;
+            color: #091747;
+            margin-top: 0.7em;
+            margin-right: 0.2em;
+            margin-left: 0.2em;
+            width: 96%;
+            max-width: 96%;
+            padding: 1em;
+            outline: none;
+            border: none;
+            border-radius: 30px;
+            box-shadow: 2px 2px 5px #d8d8d896, inset -5px -5px 10px #8a8a8a42;
+            transition: all 0.2s ease-in-out;
+        }
+        
+        .input {
+            -moz-appearance: none;
+            -webkit-appearance: none;
+            appearance: none;
+            background-color: transparent;
+            font-size: 18px;
+            overflow-wrap: break-word;
+            letter-spacing: 0.1em;
+            color: #091747;
+            margin-top: 0.7em;
+            margin-right: 0.2em;
+            margin-left: 0.2em;
+            width: auto;
+            max-width: 50%;
+            padding: 1em;
+            outline: none;
+            border: none;
+            border-radius: 30px;
+            box-shadow: inset 2px 2px 5px #d8d8d896, inset -5px -5px 10px #8a8a8a42;
+            transition: all 0.2s ease-in-out;
+        }
+        
+        .input:focus {
+            overflow-wrap: break-word;
+            box-shadow: inset 1px 1px 2px #d8d8d896, inset -1px -1px 2px #8a8a8a42;
+        }
+        
+        .select {
+            -moz-appearance: none;
+            -webkit-appearance: none;
+            appearance: none;
+            display: inline;
+            margin: auto;
+            margin-top: 2em;
+            margin-bottom: 2em;
+            padding: 1em 1em 1em 1.5em;
+            background: #eeeeee;
+            width: 4em;
+            height: 4em;
+            text-decoration: none;
+            color: rgb(0, 0, 0);
+            outline: none !important;
+            border: 0;
+            border-radius: 2em;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1em;
+            font-family: 'Nunito Sans', sans-serif;
+            box-shadow: 10px 10px 10px #d8d8d896, inset -10px -10px 10px #8a8a8a42;
+            transition: 0.3s;
+        }
+        
+        .select:focus {
+            overflow-wrap: break-word;
+            box-shadow: 10px 10px 10px #d8d8d896, inset -10px -10px 10px #8a8a8a42;
+            transform: scale(0.98);
+            background-color: #DDDDDD;
+        }
+        
+        .select:hover {
+            overflow-wrap: break-word;
+            color: black;
+            background-color: #DDDDDD;
+            box-shadow: 10px 10px 10px #d8d8d896, inset -10px -10px 10px #8a8a8a42;
+        }
+        
+        .buttonindex {
+            display: inline;
+            margin: auto;
+            margin-top: 2em;
+            margin-bottom: 2em;
+            padding: 1.3em 0 1em;
+            background: #4D90FE;
+            width: 4em;
+            height: 4em;
+            text-decoration: none;
+            color: #fff;
+            outline: none !important;
+            border: 0;
+            border-radius: 2em;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1em;
+            font-family: 'Nunito Sans', sans-serif;
+            box-shadow: 10px 10px 10px #d8d8d896, inset -10px -10px 10px #8a8a8a42;
+            transition: 0.3s;
+        }
+        
+        .buttonindex:hover {
+            background: #2260c5;
+            box-shadow: 10px 10px 10px #d8d8d896, inset -10px -10px 10px #8a8a8a42;
+        }
+        
+        .buttonindex:active {
+            outline: none !important;
+        }
+        
+        .buttonindex:focus {
+            outline: none !important;
+            transform: scale(0.98);
+        }
+        
+        p {
+            font-weight: 300;
+            margin-top: 1em;
+            line-height: 1.45em;
+            width: 80%;
+        }
+        
+        .footer {
+            text-align: center;
+            padding-top: 1em;
+            text-decoration: none;
+        }
+        
+        a:link,
+        a:visited {
+            text-decoration: none;
+            color: #ffffff;
+            padding-left: 0.3em;
+            padding-right: 0.3em;
+        }
+        
+        .txt-blue {
+            color: blue !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main>
+        <div class="containerIndex" id="main">
+            <div class="neumorphism-2" data-aos="flip-left">
+                <h1>Calculadora JS</h1>
+
+                <br>
+
+                <h3>Número 1</h3>
+                <input type="number" class="input" id="number1">
+                <br><br>
+                <h3>Número 2</h3>
+                <input type="number" class="input" id="number2">
+                <br><br>
+                <h3>Operación:</h3>
+
+                <select name="operacion" id="operacion" class="select">
+                    <option value="suma">+</option>
+                    <option value="resta">-</option>
+                    <option value="producto">*</option>
+                    <option value="division">/</option>
+                    <option value="potencia">^</option>
+                </select>
+                <button onclick="calcular()" class="buttonindex">=</button>
+                <button onclick="limpiar()" class="buttonindex">C</button>
+
+                <br><br>
+
+                <h3>Resultado:</h3>
+                <br><br>
+                <textarea id="result" class="result">0</textarea>
+                <br> <br>
+
+                <h5 class="footer">Made by <a href="http://github.com/seanjl" class="txt-blue">Sean Leitch</a></h5>
+
+            </div>
+        </div>
+    </main>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js "></script>
+
+    <script>
+        AOS.init();
+    </script>
+
+    <script>
+        function calcular() {
+            var n1 = document.getElementById("number1").value
+            var n2 = document.getElementById("number2").value
+            var operacion = document.getElementById("operacion").selectedIndex
+            var res = document.getElementById("result")
+
+            if (n1.length == 0 || n2.length == 0) {
+                res.innerText = "Introduzca todos los numeros"
+            } else {
+                var number1 = parseInt(n1)
+                var number2 = parseInt(n2)
+                var respuesta = 0
+
+                if (operacion === 0) {
+                    respuesta = number1 + number2
+                    operacion = "+"
+                } else if (operacion == 1) {
+                    respuesta = number1 - number2
+                    operacion = "-"
+                } else if (operacion == 2) {
+                    respuesta = number1 * number2
+                    operacion = "*"
+                } else if (operacion == 3) {
+                    respuesta = number1 / number2
+                    operacion = "/"
+                } else if (operacion == 4) {
+                    respuesta = Math.pow(number1, number2)
+                    operacion = "^"
+                }
+                res.innerText = number1 + " " + operacion + " " + number2 + " = " + respuesta
+            }
+        }
+
+        function limpiar() {
+            var n1 = document.getElementById("number1").value
+            var n2 = document.getElementById("number2").value
+            var operacion = document.getElementById("operacion").selectedIndex
+            var res = document.getElementById("result")
+
+            res.innerText = ""
+
+        }
+    </script>
+
+</body>
+
+</html>
